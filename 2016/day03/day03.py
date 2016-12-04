@@ -1,32 +1,31 @@
 f = open('input03.txt', 'r')
 t = f.read().split('\n')
 
-#print t
+## Part 01 ##
 
-shapes = []
+horizontal_shapes = []
 
 for i in t:
     numbers = map(int, i.split())
-    numbers.sort()
-    shapes.append(numbers)
+    horizontal_shapes.append(numbers)
 
-#print shapes
+# Create a function to check if a list of 3 numbers can be a triangle
 
-possible_triangle = 0
+def check_if_triangle(shapes):
+    possible_triangle = 0
+    for i in range(len(shapes)):
+        shapes[i].sort()    #sorts so hypotenuse is the third one (index = 2)
+        c1 = shapes[i][0]
+        c2 = shapes[i][1]
+        h = shapes[i][2]
+        if c1 + c2 > h:
+            possible_triangle +=1
+    return possible_triangle
 
-for i in range(len(shapes)):
-    c1 = shapes[i][0]
-    c2 = shapes[i][1]
-    h = shapes[i][2]
-    if c1 + c2 > h:
-        #print h,' is bigger than ',c1+c2
-        possible_triangle += 1
+print 'Possible row triangle : ',check_if_triangle(horizontal_shapes)
 
-print 'Possible row triangle : ',possible_triangle
 
 ## Part 02 ##
-
-#print t
 
 vertical = []
 vertical1 = []
@@ -44,18 +43,6 @@ vertical = vertical1 + vertical2 + vertical3
 
 vertical_shapes = [vertical[i:i+3] for i in range(0, len(vertical), 3)]
 
-for i in vertical_shapes:
-    i.sort()
-
 #print vertical_shapes
 
-possible_vertical_triangle = 0
-
-for i in range(len(vertical_shapes)):
-    c1 = vertical_shapes[i][0]
-    c2 = vertical_shapes[i][1]
-    h = vertical_shapes[i][2]
-    if c1 + c2 > h:
-        possible_vertical_triangle += 1
-
-print 'Possible vertical triangle : ',possible_vertical_triangle
+print 'Possible vertical triangle : ',check_if_triangle(vertical_shapes)
