@@ -1,18 +1,31 @@
 const fs = require('fs')
 
 fs.readFile('input.txt', 'utf-8', (err, data) => {
-    let dataArr = data.split('')
-    let digits = []
-    console.log(dataArr)
-    for (let i = 0; i < dataArr.length; i++) {
-        if (dataArr[i] == dataArr[i+1]) {
-            digits.push(parseInt(dataArr[i]))
+    let arr = data.split('')
+
+    let sum = 0
+    let step = 1
+    for (let i = 0; i < arr.length; i++) {
+        let nextStep = i + step
+        if (nextStep >= arr.length){
+            nextStep = arr.length - nextStep
+        }
+        if (arr[i] == arr[nextStep]) {
+            sum += parseInt(arr[i])
         }
     }
+    console.log('Sum 100%: ',sum)
 
-    if (dataArr[0] == dataArr[dataArr.length - 1]) {
-        digits.push(parseInt(dataArr[0]))
+    let sum50 = 0
+    let step50 = arr.length/2
+    for (let i = 0; i < arr.length; i++) {
+        let nextStep50 = i + step50
+        if (nextStep50 >= arr.length){
+            nextStep50 -= arr.length
+        }
+        if (arr[i] == arr[nextStep50]) {
+            sum50 += parseInt(arr[i])
+        }
     }
-    let summer = (accumulator, currentValue) => accumulator + currentValue
-    console.log('Sum: ',digits.reduce(summer))
+    console.log('Sum 50%: ',sum50)
 })
