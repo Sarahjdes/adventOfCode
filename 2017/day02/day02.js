@@ -6,7 +6,22 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
     for (i = 0; i < arr.length; i++) {
         differences.push(max(arr[i])-min(arr[i]))
     }
-    console.log('Checksum: ', differences.reduce(sum))
+    console.log('Checksum Difference: ', differences.reduce(sum))
+
+    let divisibles = []
+    for (i = 0; i < arr.length; i++) {
+        let row = arr[i].map(x => parseInt(x))
+        row.sort((a, b) => b-a)
+        while (row.length > 0) {
+            for (j = 1; j < row.length; j++) {
+                if (row[0]%row[j] == 0) {
+                    divisibles.push(row[0]/row[j])
+                }
+            }
+            row.shift()
+        }
+    }
+    console.log('Checksum Divisible: ', divisibles.reduce(sum))
 })
 
 let parser = (data) => {
@@ -29,3 +44,11 @@ let max = (arr) => {
 }
 
 let sum = (acc, curr) => acc + curr
+
+let divide = (acc, curr) => acc / curr
+
+// Trouver max, pop de l'array
+// Diviser par chacun des nombres de l'array
+//      Si % == 0 && / != 1, return
+//      Else, next
+// Si rien retourné, trouver max de l'arr, puis pop and repeat
