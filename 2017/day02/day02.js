@@ -46,9 +46,3 @@ let max = (arr) => {
 let sum = (acc, curr) => acc + curr
 
 let divide = (acc, curr) => acc / curr
-
-// Trouver max, pop de l'array
-// Diviser par chacun des nombres de l'array
-//      Si % == 0 && / != 1, return
-//      Else, next
-// Si rien retourné, trouver max de l'arr, puis pop and repeat
