@@ -49,6 +49,7 @@ for (i = 0; coordinates == undefined; i++) {
         }
     }
 
+    /*
     console.log('Index:', index, 
         '\tNumber:', square.number, 
         '\tCoordinates:', square.coordinates, 
@@ -56,6 +57,7 @@ for (i = 0; coordinates == undefined; i++) {
         '\tTop-Right:', corner.topright.number, 
         '\tTop-Left:', corner.topleft.number,  
         '\tBottom-Left:', corner.bottomleft.number)
+    */
 
     if (input == square.number) {
         console.log('The input is a square number!')
@@ -108,3 +110,64 @@ for (i = 0; coordinates == undefined; i++) {
 }
 
 console.log('The coordinates are:', coordinates, 'and', manhattanDistance(coordinates), 'steps are required')
+
+let current = {
+    value: 1, 
+    position: {
+        x: 0,
+        y: 0
+    }, 
+    direction: 'right'
+}
+let filled = []
+
+for (i = 0; current.value < input; i++) {
+    let index = i
+
+    let value = 0
+
+    if (index == 0) {
+        value = 1
+    }
+
+    for (j = 0; j < filled.length; j++) {
+        let diffX = Math.abs(current.position.x - filled[j].position.x)
+        let diffY = Math.abs(current.position.y - filled[j].position.y)
+        if (diffX <= 1 && diffY <= 1) {
+            value += filled[j].value
+        } 
+    }
+
+    filled.push({
+        position: {
+            x: current.position.x, 
+            y: current.position.y
+        }, 
+        value: value, 
+        direction: current.direction
+    })
+
+    if (current.direction == 'up') {
+        current.position.y += 1
+    } else if (current.direction == 'left') {
+        current.position.x -= 1
+    } else if (current.direction == 'down') {
+        current.position.y -= 1
+    } else if (current.direction == 'right') {
+        current.position.x += 1
+    }
+
+    if (current.position.x -1 == -current.position.y && current.direction == 'right') {
+        current.direction = 'up'
+    } else if (current.position.x == current.position.y && current.direction == 'up') {
+        current.direction = 'left'
+    } else if (-current.position.x == current.position.y && current.direction == 'left') {
+        current.direction = 'down'
+    } else if (-current.position.x == -current.position.y && current.direction == 'down') {
+        current.direction = 'right'
+    }
+
+    current.value = value
+} 
+
+console.log('First value larger than', input, ':', current.value)
