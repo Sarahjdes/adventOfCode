@@ -1,14 +1,23 @@
 const fs = require('fs')
 
-var isDone = false
+var firstRoundOver = false
+var secondRoundOver = false
 
 fs.readFile('input.txt', 'utf-8', (err, data) => {
     let currentConf = parser(data).map(item => parseInt(item))
-    let configurations = []
+    let firstRoundConfigurations = []
+    let secondRoundConfigurations = []
 
-    while(isDone == false) {
-        main(currentConf, configurations)
+    while(firstRoundOver == false) {
+        main(currentConf, firstRoundConfigurations)
     }
+
+    while(secondRoundOver == false) {
+        main(currentConf, secondRoundConfigurations)
+    }
+
+    console.log('There are', firstRoundConfigurations.length, 'redistribution cycles for first round')
+    console.log('There are', secondRoundConfigurations.length, 'redistribution cycles for second round')
 })
 
 let parser = (data) => {
@@ -52,13 +61,18 @@ let main = (currentConfig, configurations) => {
     console.log('done distributing')
     console.log('current config is:', currentConfig)
     let stringConfig = currentConfig.join('-')
+
     if (configurations.indexOf(stringConfig) == -1) {
         console.log('current config', currentConfig, 'does not exists in', configurations)
         console.log('pushing', currentConfig, 'in array')
         configurations.push(currentConfig.join('-'))
         console.log('configuration array so far:', configurations)
     } else {
-        isDone = true
-        return console.log('There are', configurations.length + 1, 'redistribution cycles')
-    } 
+        if (firstRoundOver == false) {
+            configurations.push(currentConfig.join('-'))
+            firstRoundOver = true
+        } else if (firstRoundOver == true) {
+            secondRoundOver = true
+        }
+    }
 }
