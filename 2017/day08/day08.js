@@ -3,6 +3,7 @@ const fs = require('fs')
 fs.readFile('input.txt', 'utf-8', (err, data) => {
     let instructions = parser(data)
     let registerSet = []
+    let allValues = []
 
     createRegisters(instructions, registerSet)
 
@@ -10,7 +11,7 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
         let current = instructions[i]
         let statement = (getRegisterValue(current.condition.register, registerSet) + current.condition.operator + current.condition.value)
         if (eval(statement)) {
-            changeRegisterValue(current.register, registerSet, current.incdec, current.amount)
+            changeRegisterValue(current.register, registerSet, current.incdec, current.amount, allValues)
         } else {
         }
     }
@@ -21,7 +22,9 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
         finalValues.push(registerSet[i].value)
     }
 
-    console.log('Largest value:', Math.max(...finalValues))
+    console.log('Largest end value:', Math.max(...finalValues))
+
+    console.log('Largest ever value:', Math.max(...allValues))
 })
 
 let parser = (data) => {
@@ -64,13 +67,15 @@ let getRegisterValue = (registerName, array) => {
     return register[0].value
 }
 
-let changeRegisterValue = (name, array, incdec, amount) => {
+let changeRegisterValue = (name, array, incdec, amount, allValuesArray) => {
     let register = array.filter((obj) => {
         return obj.registerName == name
     })
     if (incdec == 'inc') {
+        allValuesArray.push(register[0].value + amount)
         return register[0].value += amount
     } else {
+        allValuesArray.push(register[0].value - amount)
         return register[0].value -= amount
     }
 }
