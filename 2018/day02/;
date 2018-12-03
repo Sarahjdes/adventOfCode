@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-fs.readFile('input.txt', 'utf-8', (err, data) => {
+fs.readFile('input.test.txt', 'utf-8', (err, data) => {
     let arr = data.split('\n')
     let containsTwoCount = 0
     let containsThreeCount = 0
@@ -27,20 +27,29 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
     }
     console.log('checksum:', containsTwoCount * containsThreeCount)
 
+    console.log(arr)
+    let alike = []
+
     for (let id of arr) {
+        //console.log('>>', id)
         for (let currentId of arr) {
             let diffCount = 0
             let alike = []
+            //console.log(currentId)
             for (let i in currentId) {
+                //console.log(id[i], '&&', currentId[i])
                 if (id[i] != currentId[i])
                     diffCount++
                 else 
                     alike.push(id[i])
             }
+            //console.log(diffCount)
             if (diffCount == 1) {
-                console.log('common letters:', alike.join(''))
-                return
+                console.log(id, '&&', currentId)
+                //console.log(alike.join(''))
             }
         }
     }
+
+    console.log(alike)
 })
