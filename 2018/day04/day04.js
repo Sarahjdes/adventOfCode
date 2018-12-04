@@ -1,9 +1,7 @@
 const fs = require('fs')
 
-fs.readFile('input.test.txt', 'utf-8', (err, data) => {
+fs.readFile('input.txt', 'utf-8', (err, data) => {
     let arr = data.split('\n').sort()
-
-    console.log(arr)
 
     let log = {}
     let totalLog = {}
@@ -41,7 +39,7 @@ fs.readFile('input.test.txt', 'utf-8', (err, data) => {
         falls = minute
     }
 
-    let mostSleepingGuard = Object.keys(totalLog).reduce(function(a, b){ return totalLog[a] > totalLog[b] ? a : b });
+    let mostSleepingGuard = Object.keys(totalLog).reduce((a, b) => totalLog[a] > totalLog[b] ? a : b )
 
     console.log('guard sleeping the most:', mostSleepingGuard)
 
@@ -49,8 +47,26 @@ fs.readFile('input.test.txt', 'utf-8', (err, data) => {
 
     console.log('most slept minute:', mostSleptMinute)
 
-    let checksum = mostSleepingGuard * mostSleptMinute
+    let checksumOne = mostSleepingGuard * mostSleptMinute
 
-    console.log('checksum:', checksum)
+    console.log('checksum strategy 1:', checksumOne)
+
+    let mostSleptMinuteByGuard = {}
+    let frequencyOfMostSleptMinute = {}
+
+    for (let guard in log) {
+        mostSleptMinuteByGuard[guard] = Object.keys(log[guard]).reduce((a, b) => log[guard][a] > log[guard][b] ? a : b)
+        let mostSlept = mostSleptMinuteByGuard[guard]
+        frequencyOfMostSleptMinute[guard] = log[guard][mostSlept]
+    }
+
+    let guardSleepingTheMostAtSingleMinute = Object.keys(frequencyOfMostSleptMinute).reduce((a, b) => frequencyOfMostSleptMinute[a] > frequencyOfMostSleptMinute[b] ? a : b)
+
+    console.log('guard sleeping the most:', guardSleepingTheMostAtSingleMinute)
+    console.log('most slept minute:', mostSleptMinuteByGuard[guardSleepingTheMostAtSingleMinute])
+
+    let checksumTwo = guardSleepingTheMostAtSingleMinute * mostSleptMinuteByGuard[guardSleepingTheMostAtSingleMinute]
+    
+    console.log('checksum strategy 2:', checksumTwo)
 })
 
