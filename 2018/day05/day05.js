@@ -24,8 +24,30 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
             removeOpposites(dataArray)
         return dataArray
     } 
-
-    let reactedPolymer = removeOpposites(arr)
+    
+    let starOneData = arr.slice()
+    let reactedPolymer = removeOpposites(starOneData)
 
     console.log('units remaining of fully reacted polymer:', reactedPolymer.length)
+
+    const removePairs = (letter, dataArray) => {
+        for (let i = 0; i < dataArray.length; i++) {
+            if (dataArray[i] == letter || dataArray[i] == letter.toLowerCase()) {
+                dataArray.splice(i, 1)
+                i--
+            }
+        }
+        return dataArray
+    }
+
+    let allReactedShortenedPolymers = []
+
+    for (let i = 65; i <= 90; i++) {
+        let starTwoData = arr.slice()
+        let shortened = removePairs(String.fromCharCode(i), starTwoData)
+        let reactedShortenedPolymer = removeOpposites(shortened)
+        allReactedShortenedPolymers.push(reactedShortenedPolymer.length)
+        allReactedShortenedPolymers.sort()
+    }
+    console.log('shorter produced polymer:', allReactedShortenedPolymers[0])
 })
