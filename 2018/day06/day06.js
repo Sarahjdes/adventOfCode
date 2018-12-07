@@ -51,11 +51,26 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
     }
 
     for (let i of infiniteCoords) {
-        console.log(i)
         delete coordinates[i]
     }
 
     let biggest = Object.keys(coordinates).reduce((a, b) => coordinates[a] > coordinates[b] ? a : b)
 
     console.log('largest finite area:', coordinates[biggest])
+
+    let safeRegion = 0
+
+    for (let x = minX; x <= maxX; x++) {
+        for (let y = minY; y <= maxY; y++) {
+            let mdSum = 0
+            for (let coord of dataArray) {
+                let md = Math.abs(x-coord.split(', ')[0]) + Math.abs(y-coord.split(', ')[1])
+                mdSum += md
+            }
+            if (mdSum < 10000)
+                safeRegion++
+        }
+    }
+
+    console.log('safe region:', safeRegion)
 })
